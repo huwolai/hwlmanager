@@ -69,8 +69,8 @@ class ordermanager extends React.Component {
   }
 
 
-  handleDetailClick() {
-
+  handleDetailClick(order_no) {
+    this.context.router.push('orderdetail?order_no=' + order_no);
   }
   handleDeleteClick(option) {
     this.props.dispatch({
@@ -177,7 +177,7 @@ class ordermanager extends React.Component {
       render: (text, record) => {
 
         return <div>
-          <Button onClick={() => this.handleDetailClick()}>详情</Button>
+          <Button onClick={() => this.handleDetailClick(record.order_no)}>详情</Button>
         </div>
       }
     }]

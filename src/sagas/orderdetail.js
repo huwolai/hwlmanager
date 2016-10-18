@@ -1,31 +1,48 @@
-import { takeLatest } from 'redux-saga';
-import { take,takem, call, put, fork, cancel } from 'redux-saga/effects';
-import { auditingTaskOrder,queryTaskDetail } from '../services/task';
-import { message } from 'antd';
+import {
+  takeLatest
+} from 'redux-saga';
+import {
+  take,
+  takem,
+  call,
+  put,
+  fork,
+  cancel
+} from 'redux-saga/effects';
+import {
+  getOrderDetail
+} from '../services/order';
+import {
+  message
+} from 'antd';
 
-function* taskDetailGet(data) {
+function* OrderDetailGet(data) {
   try {
     var params = data.payload
-    const { jsonResult } = yield call(queryTaskDetail,params.taskid,params.pageIndex,params.pageSize,params.keywords,params.field,params.auditingstatus);
+    const {
+      jsonResult
+    } = yield call(getOrderDetail, params);
     yield put({
-        type: 'task/orderdetail/id/success',
-        payload: jsonResult.data,
-        pageIndex:params.pageIndex
+      type: 'orderdetail/get/success',
+      payload: jsonResult
     });
   } catch (err) {
- 
+
     message.error(err)
+    yield put({
+      type: 'orderdetail/get/error'
+    });
   }
 }
 
 
 
-function* watchTaskDetailGet(){
+function* watchOrderDetailGet() {
 
-  yield takeLatest('task/orderdetail/id', taskDetailGet)
+  yield takeLatest('orderdetail/get', OrderDetailGet)
 }
 
-export default function* () {
+export default function*() {
 
-  yield fork(watchTaskDetailGet)
+  yield fork(watchOrderDetailGet)
 }

@@ -32,6 +32,7 @@ import ProdEdit from '../views/prodmanager/edit.js';
 import DistribManager from '../views/distribmanager/index.js';
 import DistribEdit from '../views/distribmanager/edit.js';
 import OrderManager from '../views/ordermanager/index.js'
+import OrderDetail from '../views/ordermanager/orderdetail.js'
 
 
 const validate = function(next, replace, callback) {
@@ -51,7 +52,8 @@ const Routes = ({
     <Route path="/" onEnter={validate}>
         <IndexRedirect to="home" />
         <Route component={App}>
-        <Route path="ordermanager" component={OrderManager} />
+          <Route path="ordermanager" component={OrderManager} />
+          <Route path="orderdetail" component={OrderDetail} />
           <Route path="prodedit" component={ProdEdit} />
           <Route path="prodmanager" component={ProdManager} />
           <Route path="home" component={ProdManager}/>

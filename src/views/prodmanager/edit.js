@@ -73,7 +73,10 @@
      })
      this.props.dispatch({
        type: 'merchant/search',
-       payload: {}
+       payload: {
+         page_size: 9999,
+         page_index: 1
+       }
      })
      this.props.dispatch({
        type: 'flags/search',
@@ -106,26 +109,6 @@
        }
      });
    }
-
-   handleInputChange(e) {
-     this.props.dispatch({
-       type: 'merchant/search/condition/keywords',
-       payload: {
-         keywords: e.target.value
-       }
-     });
-   }
-
-   handleSelectChange(value) {
-     console.log(`selected ${value}`);
-     this.props.dispatch({
-       type: 'merchant/search/condition/field',
-       payload: {
-         field: value
-       }
-     });
-   }
-
 
    handleToAddMerchant() {
      this.context.router.push('merchantadd')
@@ -330,7 +313,7 @@
                {...formItemLayout}
                 label="子标题"
              >
-              <Input type="textarea" {...getFieldProps('sub_title',{ rules: [{ required: true }], initialValue: prodDetail.sub_title +"" })} placeholder="子标题" />
+              <Input type="textarea" {...getFieldProps('sub_title',{ rules: [{ required: true }], initialValue: prodDetail.sub_title })} placeholder="子标题" />
             </FormItem>
             {prodCategoryTpl}
           <FormItem
@@ -364,7 +347,7 @@
                {...formItemLayout}
                 label="商品描述"
              >
-              <Input type="textarea" {...getFieldProps('description')} placeholder="商品描述" />
+              <Input type="textarea" {...getFieldProps('description',{initialValue:prodDetail.description})} placeholder="商品描述" />
         </FormItem>
         {bottomBtn}
         </Spin>

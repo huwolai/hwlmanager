@@ -3,7 +3,7 @@ import config from '../../../services/config';
 
 
 var Image = React.createClass({
-	 propTypes: {
+    propTypes: {
         src: React.PropTypes.string,
         style: React.PropTypes.object
 
@@ -11,16 +11,16 @@ var Image = React.createClass({
 
     render() {
 
-    	var _props = this.props;
-    	var src = _props.src
-    	var style = _props.style
+        var _props = this.props;
+        var src = _props.src
+        var style = _props.style
 
         if (src.indexOf('http://') != 0 && src.indexOf('https://') != 0) {
-            src = config.imagebaseurl + src
+            src = config.imageurl + src
         }
-  
 
-    	return  <img src={src} style={style}/>
+
+        return <img src={src} style={style}/>
     }
 
 })

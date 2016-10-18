@@ -1,33 +1,31 @@
-import { handleActions } from 'redux-actions';
-import { taskDetailColumns } from '../services/task';
+import {
+  handleActions
+} from 'redux-actions';
 
-const taskdetail1 = handleActions({
-  ['task/orderdetail/columns'](state, action) {
+const orderdetail = handleActions({
+  ['orderdetail/get/success'](state, action) {
 
-    return { ...state, columns: taskDetailColumns()};
+    return {...state,
+      loading: false,
+      model: action.payload
+    };
   },
-  ['task/orderdetail/condition/field'](state, action) {
+  ['orderdetail/get/error'](state, action) {
 
-    return { ...state, loading:false, field:action.payload.field};
+    return {...state,
+      loading: false,
+    };
   },
-  ['task/orderdetail/condition/keywords'](state, action) {
+  ['orderdetail/get'](state, action) {
 
-    return { ...state, loading:false, keywords:action.payload.keywords};
-  },
-  ['task/orderdetail/id'](state, action) {
-
-    return { ...state,loading:true,auditingSuccess:false};
-  },
-  ['task/orderdetail/id/success'](state, action) {
-
-    return { ...state, items:action.payload.data,pagination:{pageIndex:action.pageIndex,total:action.payload.total,pageSize:10},loading:false};
+    return {...state,
+      loading: true,
+      model: {}
+    };
   }
-},{
-  items: [],
-  pagination: {current:1,pageIndex:1,pageSize:10,total:0},
-  columns: [],
-  keywords: '',
-  field: 'nickname'
+}, {
+  model: {},
+  loading: false
 })
 
-export default taskdetail1;
+export default orderdetail;

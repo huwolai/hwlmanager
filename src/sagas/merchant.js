@@ -1,15 +1,33 @@
-import { takeLatest } from 'redux-saga';
-import { take,takem, call, put, fork, cancel } from 'redux-saga/effects';
-import { searchMerchants,getMerchantDetail,getMerchantImgs,auditMerchant } from '../services/merchant';
-import { message } from 'antd';
+import {
+  takeLatest
+} from 'redux-saga';
+import {
+  take,
+  takem,
+  call,
+  put,
+  fork,
+  cancel
+} from 'redux-saga/effects';
+import {
+  searchMerchants,
+  getMerchantDetail,
+  getMerchantImgs,
+  auditMerchant
+} from '../services/merchant';
+import {
+  message
+} from 'antd';
 
 function* dataSearch(data) {
   try {
     var search = data.payload
-    const { jsonResult } = yield call(searchMerchants,search.pageIndex,search.pageSize,search.keywords,search.field);
+    const {
+      jsonResult
+    } = yield call(searchMerchants, search);
     yield put({
-        type: 'merchant/search/success',
-        payload: jsonResult,
+      type: 'merchant/search/success',
+      payload: jsonResult,
     });
   } catch (err) {
     // yield put({
@@ -24,14 +42,16 @@ function* dataSearch(data) {
 function* merchantAudit(data) {
   try {
     var query = data.payload
-    const { jsonResult } = yield call(auditMerchant,query);
+    const {
+      jsonResult
+    } = yield call(auditMerchant, query);
     yield put({
-        type: 'merchantaudit/post/success',
-        payload: jsonResult
+      type: 'merchantaudit/post/success',
+      payload: jsonResult
     });
   } catch (err) {
     yield put({
-     type: 'merchantaudit/post/error'
+      type: 'merchantaudit/post/error'
     });
     message.error(err)
   }
@@ -41,14 +61,16 @@ function* merchantAudit(data) {
 function* merchantDetail(data) {
   try {
     var query = data.payload
-    const { jsonResult } = yield call(getMerchantDetail,query);
+    const {
+      jsonResult
+    } = yield call(getMerchantDetail, query);
     yield put({
-        type: 'merchantdetail/get/success',
-        payload: jsonResult
+      type: 'merchantdetail/get/success',
+      payload: jsonResult
     });
   } catch (err) {
     yield put({
-     type: 'merchantdetail/get/error'
+      type: 'merchantdetail/get/error'
     });
     message.error(err)
   }
@@ -58,14 +80,16 @@ function* merchantDetail(data) {
 function* merchantImgs(data) {
   try {
     var query = data.payload
-    const { jsonResult } = yield call(getMerchantImgs,query);
+    const {
+      jsonResult
+    } = yield call(getMerchantImgs, query);
     yield put({
-        type: 'merchantimgs/get/success',
-        payload: jsonResult
+      type: 'merchantimgs/get/success',
+      payload: jsonResult
     });
   } catch (err) {
     yield put({
-     type: 'merchantimgs/get/error'
+      type: 'merchantimgs/get/error'
     });
     message.error(err)
   }
@@ -88,7 +112,7 @@ function* watchDataSearch() {
   yield takeLatest('merchant/search', dataSearch)
 }
 
-export default function* () {
+export default function*() {
   yield fork(watchMerchantAudit);
   yield fork(watchMerchantImgs);
   yield fork(watchDataSearch);
