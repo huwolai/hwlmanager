@@ -28,6 +28,7 @@
    pagination: PropTypes.object,
    prodDetail: PropTypes.object,
    prodAdded: false,
+   prodUpdated: false,
    loading: false,
    flags: PropTypes.array,
    prodImgs: PropTypes.array
@@ -143,11 +144,18 @@
        prodDetail.dis_price = parseFloat(values.dis_price);
        prodDetail.imgs = values.imgs;
        prodDetail.flag = values.flag;
+       if (prodDetail.id) {
+         this.props.dispatch({
+           type: 'prod/update',
+           payload: prodDetail
+         });
+       } else {
+         this.props.dispatch({
+           type: 'prod/add',
+           payload: prodDetail
+         });
+       }
 
-       this.props.dispatch({
-         type: 'prod/add',
-         payload: prodDetail
-       });
      });
    }
    imgs = []
@@ -158,7 +166,8 @@
        loading,
        pagination,
        prodDetail,
-       prodAdded
+       prodAdded,
+       prodUpdated
      } = nextProps
      let prodId = this.props.location.query.prod_id
      if (prodAdded) {
@@ -170,6 +179,19 @@
            dis_price: prodDetail.dis_price,
            attr_symbol_path: prodDetail.attr_symbol_path,
            stock: 999999
+         }
+       });
+       this.context.router.replace('/prodmanager');
+     }
+
+     if (prodUpdated) {
+       this.props.dispatch({
+         type: 'prodsku/update',
+         payload: {
+           prod_id: prodDetail.id,
+           price: prodDetail.price,
+           dis_price: prodDetail.dis_price,
+           attr_symbol_path: prodDetail.attr_symbol_path
          }
        });
        this.context.router.replace('/prodmanager');
@@ -232,12 +254,18 @@
        defaultFileList: prodImgs,
        onChange: (info) => {
          let fileList = info.fileList;
-
+         console.log(fileList)
          let fileData = fileList.map((file) => {
            if (file.response) {
              return {
                url: file.response.path
              };
+           } else {
+             if (file.url) {
+               return {
+                 url: file.url.replace(config.imageurl, "")
+               };
+             }
            }
          });
          this.imgs = fileData
@@ -255,6 +283,12 @@
               <div className="ant-upload-text">上传照片</div>
             </Upload>
          </FormItem>
+       this.imgs = []
+       for (var index in prodImgs) {
+         this.imgs.push({
+           url: prodImgs[index].url.replace(config.imageurl, "")
+         })
+       }
      } else {
        if (!prodId) {
          imageUploadTpl = <FormItem
@@ -282,15 +316,11 @@
                             </FormItem>
      }
 
-     let bottomBtn;
-     if (!prodId) {
-       bottomBtn = <FormItem wrapperCol={{ span: 12, offset: 7 }}>
-            <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
-        </FormItem>
-     }
+
      return (
        <Form horizontal form={this.props.form} >
             <Spin tip="正在读取数据..." spinning={this.props.loading==true}>
+              <Input type="hidden" {...getFieldProps('id', {type:'number',initialValue: prodDetail.id } ) } />
               <FormItem 
               {...formItemLayout6}
               label="类型">
@@ -349,7 +379,9 @@
              >
               <Input type="textarea" {...getFieldProps('description',{initialValue:prodDetail.description})} placeholder="商品描述" />
         </FormItem>
-        {bottomBtn}
+        <FormItem wrapperCol={{ span: 12, offset: 7 }}>
+            <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
+        </FormItem>
         </Spin>
 
         </Form>
@@ -371,6 +403,7 @@
      prodImgs: prod.prodImgs,
      categories: categories.items,
      flags: flags.items,
+     prodUpdated: prod.prodUpdated,
      prodAdded: prod.prodAdded,
      prodDetail: prod.prodDetail,
      merchants: merchant.items,

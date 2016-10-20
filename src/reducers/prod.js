@@ -12,6 +12,7 @@ const initSate = {
   merchantId: "",
   keyword: "",
   prodAdded: false,
+  prodUpdated: false,
   prodDetail: {},
   refreshTable: false,
   pagination: {
@@ -68,6 +69,28 @@ const prod = handleActions({
     return {...state,
       prodDetail: action.payload,
       loading: false
+    };
+  },
+  ['prod/update'](state, action) {
+
+    return {...state,
+      loading: true,
+      prodUpdated: false
+    };
+  },
+  ['prod/update/success'](state, action) {
+
+    return {...state,
+      prodDetail: action.payload,
+      loading: false,
+      prodUpdated: true
+    };
+  },
+  ['prod/update/error'](state, action) {
+
+    return {...state,
+      loading: false,
+      prodUpdated: false
     };
   },
   ['prod/add'](state, action) {
