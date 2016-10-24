@@ -262,8 +262,12 @@
              };
            } else {
              if (file.url) {
+               let url = prodImgs[index].url;
+               if (file.url.indexOf('?') > 0) {
+                 url = file.url.substr(0, file.url.indexOf('?')).replace(config.imageurl, "")
+               }
                return {
-                 url: file.url.replace(config.imageurl, "")
+                 url: url
                };
              }
            }
@@ -285,8 +289,12 @@
          </FormItem>
        this.imgs = []
        for (var index in prodImgs) {
+         let url = prodImgs[index].url;
+         if (prodImgs[index].url.indexOf('?') > 0) {
+           url = url.substr(0, url.indexOf('?')).replace(config.imageurl, "")
+         }
          this.imgs.push({
-           url: prodImgs[index].url.replace(config.imageurl, "")
+           url: url
          })
        }
      } else {
@@ -318,7 +326,7 @@
 
 
      return (
-       <Form horizontal form={this.props.form} >
+       <Form horizontal form={this.props.Form} >
             <Spin tip="正在读取数据..." spinning={this.props.loading==true}>
               <Input type="hidden" {...getFieldProps('id', {type:'number',initialValue: prodDetail.id } ) } />
               <FormItem 

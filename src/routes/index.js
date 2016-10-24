@@ -18,14 +18,6 @@ import cookie from 'js-cookie';
 import merchant from '../views/merchant';
 import merchantdetail from '../views/merchant/detail';
 import merchantadd from '../views/merchant/add';
-import task from '../views/task';
-import taskdetail from '../views/task/detail';
-import publish from '../views/task/publish';
-import voucher from '../views/task/voucher';
-import examine from '../views/task/examine';
-import examinedetail from '../views/task/examine_detail';
-import statistics from '../views/task/statistics';
-import orderdetail from '../views/task/orderdetail';
 import recharge from '../views/account/recharge';
 import ProdManager from '../views/prodmanager/index.js';
 import ProdEdit from '../views/prodmanager/edit.js';
@@ -60,15 +52,6 @@ const Routes = ({
           <Route path="usermanager" component={usermanager}/>
           <Route path="merchantmanager" component={merchant}/>
           <Route path="merchantdetail" component={merchantdetail} />
-          <Route path="task" component={task}/>
-          <Route path="taskpublish" component={publish}/>
-          <Route path="taskdetail" component={taskdetail}/>
-          <Route path="voucher" component={voucher}/>
-          <Route path="examine" component={examine}/>
-          <Route path="examinedetail" component={examinedetail}/>
-          <Route path="statistics" component={statistics}/>
-          <Route path="orderdetail" component={orderdetail}/>
-          <Route path='recharge' component={recharge} />
           <Route path='merchantadd' component={merchantadd} />
           <Route path="distribmanager" component={DistribManager} />
           <Route path="distribedit" component={DistribEdit} />
